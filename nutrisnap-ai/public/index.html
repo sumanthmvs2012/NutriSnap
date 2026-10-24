@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Track meals, macros, water, and daily nutrition goals." />
+  <meta name="theme-color" content="#0d5036" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+  <title>NutriSnap AI — Daily nutrition</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#top" aria-label="NutriSnap home"><span class="brand-mark">N</span><span>nutri<span>snap</span></span></a>
+      <nav aria-label="Main navigation">
+        <a class="nav-link active" href="#top"><span>▦</span> Today</a>
+        <a class="nav-link" href="#meals"><span>◫</span> My meals</a>
+        <a class="nav-link" href="#progress"><span>◔</span> Progress</a>
+      </nav>
+      <div class="sidebar-footer"><span class="tiny-avatar">S</span><div><strong>Sumanth</strong><small>Personal plan</small></div></div>
+    </aside>
+
+    <main id="top">
+      <header class="topbar">
+        <div><p class="eyebrow">SATURDAY, OCTOBER 3</p><h1>Good morning, Sumanth <span aria-hidden="true">✦</span></h1></div>
+        <button id="installBtn" class="text-button" hidden>Install app</button>
+      </header>
+
+      <section class="hero-card" aria-labelledby="goal-title">
+        <div class="hero-copy"><p class="eyebrow light">DAILY CALORIE GOAL</p><h2 id="goal-title"><span id="remainingCalories">845</span> kcal <em>remaining</em></h2><p>Keep your day in balance. One good choice at a time.</p></div>
+        <div class="goal-ring" role="img" aria-label="Calories progress: 955 of 1800 calories"><span id="ringCalories">955</span><small>of 1,800</small></div>
+      </section>
+
+      <section class="stats-grid" aria-label="Daily nutrition summary">
+        <article class="stat-card protein"><span class="stat-icon">P</span><div><p>Protein</p><h3><span id="proteinValue">64</span>g <small>/ 120g</small></h3><div class="meter"><i id="proteinMeter" style="width:53%"></i></div></div></article>
+        <article class="stat-card carbs"><span class="stat-icon">C</span><div><p>Carbs</p><h3><span id="carbValue">106</span>g <small>/ 190g</small></h3><div class="meter"><i id="carbMeter" style="width:56%"></i></div></div></article>
+        <article class="stat-card fat"><span class="stat-icon">F</span><div><p>Fat</p><h3><span id="fatValue">31</span>g <small>/ 60g</small></h3><div class="meter"><i id="fatMeter" style="width:52%"></i></div></div></article>
+        <article class="stat-card water"><span class="stat-icon">◒</span><div><p>Water</p><h3><span id="waterValue">4</span> <small>/ 8 glasses</small></h3><div class="meter"><i id="waterMeter" style="width:50%"></i></div></div><button id="waterBtn" class="add-water" aria-label="Add a glass of water">+</button></article>
+      </section>
+
+      <section class="content-grid">
+        <article class="scan-card">
+          <div class="section-heading"><div><p class="eyebrow">AI FOOD SCAN</p><h2>What are you eating?</h2></div><span class="beta-pill">AI SCAN</span></div>
+          <label id="dropZone" class="upload-zone" for="photoInput">
+            <img id="foodPreview" hidden alt="Food photo preview" />
+            <div id="uploadPrompt"><span class="scan-icon">⌁</span><strong>Snap or upload a meal</strong><small>We’ll estimate calories and macros</small></div>
+          </label>
+          <input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" hidden />
+          <div class="scan-actions"><button id="demoScan" class="primary-btn">Try a sample scan</button><button id="clearPhoto" class="secondary-btn" hidden>Choose another</button></div>
+          <div id="scanResult" class="scan-result" hidden aria-live="polite"></div>
+          <p class="disclaimer">Demo estimates only. This isn’t medical advice.</p>
+        </article>
+
+        <article class="insight-card">
+          <p class="eyebrow">YOUR WEEK</p><h2>Small steps.<br><span>Real habits.</span></h2>
+          <div class="week-bars" aria-label="Weekly calorie progress"><i style="height:47%"></i><i style="height:73%"></i><i style="height:58%"></i><i style="height:84%"></i><i style="height:62%"></i><i class="today" style="height:52%"></i><i style="height:22%"></i></div>
+          <div class="week-labels"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+          <p class="insight-note"><b>4 days</b> within your target this week.</p>
+        </article>
+      </section>
+
+      <section id="meals" class="meals-section">
+        <div class="section-heading"><div><p class="eyebrow">TODAY’S LOG</p><h2>Meals</h2></div><button id="addMealBtn" class="text-button">+ Add meal</button></div>
+        <div id="mealList" class="meal-list"></div>
+      </section>
+      <section id="progress" class="quote-card"><span>“</span><p>Consistency beats perfection. You’re building a healthy routine.</p></section>
+    </main>
+  </div>
+
+  <dialog id="mealDialog">
+    <form id="mealForm">
+      <div class="dialog-heading"><div><p class="eyebrow">MANUAL ENTRY</p><h2>Add a meal</h2></div><button type="button" id="closeDialog" class="icon-button" aria-label="Close">×</button></div>
+      <label>Meal name<input required id="mealName" placeholder="e.g. Greek yogurt bowl" /></label>
+      <div class="form-row"><label>Calories<input required id="mealCals" type="number" min="1" placeholder="320" /></label><label>Protein (g)<input required id="mealProtein" type="number" min="0" placeholder="20" /></label></div>
+      <div class="form-row"><label>Carbs (g)<input required id="mealCarbs" type="number" min="0" placeholder="36" /></label><label>Fat (g)<input required id="mealFat" type="number" min="0" placeholder="10" /></label></div>
+      <button class="primary-btn wide" value="default">Save meal</button>
+    </form>
+  </dialog>
+  <script src="/app.js"></script>
+</body>
+</html>

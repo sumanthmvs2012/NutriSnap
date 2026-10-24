@@ -1,0 +1,9 @@
+{
+  "name": "NutriSnap AI",
+  "short_name": "NutriSnap",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f8f1",
+  "theme_color": "#0d5036",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
